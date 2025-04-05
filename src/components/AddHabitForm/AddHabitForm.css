@@ -1,0 +1,22 @@
+form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+fieldset {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    border: none;
+    margin-bottom: 10px;
+}
+label {
+    margin-bottom: 5px;
+}
+input, select {
+    height: 40px;
+    padding: 0 10px;
+}
+textarea {
+    height: 60px;
+    padding:10px;
+}
