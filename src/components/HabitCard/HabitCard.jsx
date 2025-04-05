@@ -1,6 +1,6 @@
 import './HabitCard.css';
 
-export const HabitCard = ({habit}) => {
+export const HabitCard = ({habit, onCheckIn}) => {
     return (
         <div className="card">
             <div className="card-img-container"></div>
@@ -11,9 +11,14 @@ export const HabitCard = ({habit}) => {
                     
                 </div>
             </div>
-            <div className="card-button-container">
-                <button>Water Plant</button>
+            <div style={{width: '100%', height:'40px', display: 'flex', alignItems: 'center'}}>
+                {habit.lastCheckIn === new Date().toISOString().split("T")[0] ? 
+                <div style={{width: '100%'}}>Plant watered ✅</div> :
+                <div className="card-button-container">
+                    <button onClick={() => onCheckIn(habit)}>Water Plant</button>
+                </div>}
             </div>
+            
         </div>
     )
 }

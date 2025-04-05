@@ -40,10 +40,30 @@ export const Dashboard = () => {
         })
     }
 
+    const handleCheckIn = (habit) => {
+        setHabits(prevValue => {
+
+            const updatedHabits = prevValue.map(h => {
+                if (h.id === habit.id) {
+                    return {
+                        ...h,
+                        streak: h.streak + 1,
+                        lastCheckIn: new Date().toISOString().split("T")[0]
+                    }
+                } else {
+                    return h;
+                }
+            })
+            console.log(updatedHabits);
+
+            return updatedHabits;
+        })
+    }
+
     return (
         <>
             <Header></Header>
-            <HabitList habits={habits}/>
+            <HabitList habits={habits} onCheckIn={handleCheckIn}/>
             <AddHabitForm onAddHabit={handleAddHabit}></AddHabitForm>
         </>
     )
