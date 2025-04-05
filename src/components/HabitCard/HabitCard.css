@@ -1,0 +1,20 @@
+.card {
+    display: flex;
+    flex-wrap: wrap;
+    width: 25%;
+    border: 1px solid white;
+    border-radius: 3px;
+}
+.card-img-container {
+    background: grey;
+    border-radius: 3px;
+    height: 100px;
+}
+.card-img-container,
+.card-info-container {
+    width: 45%;
+}
+.card-button-container {
+    margin-top: 10px;
+    width: 100%;
+}
