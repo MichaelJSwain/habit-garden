@@ -9,7 +9,7 @@ const fakeData = [
         name: 'meditate',
         frequency: 'Daily',
         streak: 2,
-        lastCheckIn: null,
+        lastCheckIn: '2025-04-05',
         createdAt: new Date().toISOString().split("T")[0],
         stage: "Seed",
         description: '',
@@ -20,7 +20,7 @@ const fakeData = [
         name: 'study',
         frequency: 'Daily',
         streak: 6,
-        lastCheckIn: null,
+        lastCheckIn: '2025-04-05',
         createdAt: new Date().toISOString().split("T")[0],
         stage: "Seed",
         description: 'for the test',
@@ -38,6 +38,13 @@ export const Dashboard = () => {
         setHabits(prevValue => {
             return [...prevValue, newHabit];
         })
+    }
+
+    const handleUpdateHabit = (updatedHabit) => {
+        const updatedList = habits.map(h => h.id === updatedHabit.id ? updatedHabit : h);
+        setHabits(updatedList);
+
+        // persist data
     }
 
     const handleCheckIn = (habit) => {
@@ -63,7 +70,7 @@ export const Dashboard = () => {
     return (
         <>
             <Header></Header>
-            <HabitList habits={habits} onCheckIn={handleCheckIn}/>
+            <HabitList habits={habits} onUpdate={handleUpdateHabit}/>
             <AddHabitForm onAddHabit={handleAddHabit}></AddHabitForm>
         </>
     )

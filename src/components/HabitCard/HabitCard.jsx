@@ -1,6 +1,33 @@
 import './HabitCard.css';
 
-export const HabitCard = ({habit, onCheckIn}) => {
+const getToday = () => {
+    return new Date().toISOString().split("T")[0];
+  }
+  
+const getYesterday = () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    return yesterday.toISOString().split("T")[0];
+}
+
+export const HabitCard = ({habit, onUpdate}) => {
+    
+
+    const handleCheckIn = () => {
+        const today = getToday();
+        if (habit.lastCheckIn === today) return;
+    
+        const newStreak = habit.lastCheckIn === getYesterday() ? habit.streak + 1 : 1;
+
+        const updatedHabit = {
+            ...habit,
+            streak: newStreak,
+            lastCheckIn: today,
+        };
+
+        onUpdate(updatedHabit);
+    };
+
     return (
         <div className="card">
             <div className="card-img-container"></div>
@@ -15,7 +42,7 @@ export const HabitCard = ({habit, onCheckIn}) => {
                 {habit.lastCheckIn === new Date().toISOString().split("T")[0] ? 
                 <div style={{width: '100%'}}>Plant watered ✅</div> :
                 <div className="card-button-container">
-                    <button onClick={() => onCheckIn(habit)}>Water Plant</button>
+                    <button onClick={() => handleCheckIn()}>Water Plant</button>
                 </div>}
             </div>
             
