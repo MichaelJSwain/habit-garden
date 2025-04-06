@@ -1,43 +1,30 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Header } from "../components/Header/Header"
 import { HabitList } from "../components/HabitList/HabitList.jsx";
 import { AddHabitForm } from "../components/AddHabitForm/AddHabitForm.jsx";
 
-const fakeData = [
-    {
-        id: 1,
-        name: 'meditate',
-        frequency: 'Daily',
-        streak: 2,
-        lastCheckIn: '2025-04-05',
-        createdAt: new Date().toISOString().split("T")[0],
-        stage: "Seed",
-        description: '',
-        history: []
-    },
-    {
-        id: 9,
-        name: 'study',
-        frequency: 'Daily',
-        streak: 6,
-        lastCheckIn: '2025-04-05',
-        createdAt: new Date().toISOString().split("T")[0],
-        stage: "Seed",
-        description: 'for the test',
-        history: []
-    }
-]
+const HABITS_KEY = "habit_list";
 
 export const Dashboard = () => {
-    const [habits, setHabits] = useState(fakeData);
+    const [habits, setHabits] = useState([]);
+
+    useEffect(() => {
+        // 'fetch' stored habits in localStorage
+        const stored = localStorage.getItem(HABITS_KEY);
+
+        if (stored) {
+            const parsedHabits = JSON.parse(stored);
+            setHabits(parsedHabits);
+        }
+    }, []);
 
     const handleAddHabit = (newHabit) => {
-        // persist data
-
+        const updatedList = [...habits, newHabit];
         // update UI
-        setHabits(prevValue => {
-            return [...prevValue, newHabit];
-        })
+        setHabits(updatedList);
+
+        // persist data
+        storeHabits(updatedList);
     }
 
     const handleUpdateHabit = (updatedHabit) => {
@@ -45,26 +32,12 @@ export const Dashboard = () => {
         setHabits(updatedList);
 
         // persist data
+        storeHabits(updatedList);
     }
 
-    const handleCheckIn = (habit) => {
-        setHabits(prevValue => {
-
-            const updatedHabits = prevValue.map(h => {
-                if (h.id === habit.id) {
-                    return {
-                        ...h,
-                        streak: h.streak + 1,
-                        lastCheckIn: new Date().toISOString().split("T")[0]
-                    }
-                } else {
-                    return h;
-                }
-            })
-            console.log(updatedHabits);
-
-            return updatedHabits;
-        })
+    const storeHabits = (habitList) => {
+        const stringifiedHabits = JSON.stringify(habitList);
+        localStorage.setItem(HABITS_KEY, stringifiedHabits);
     }
 
     return (

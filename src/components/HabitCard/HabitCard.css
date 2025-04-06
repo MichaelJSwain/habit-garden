@@ -19,6 +19,9 @@
 .card-info-container {
     width: 45%;
 }
+.card-info-container {
+    text-align: left;
+}
 .card-button-container {
     margin-top: 10px;
     width: 100%;
