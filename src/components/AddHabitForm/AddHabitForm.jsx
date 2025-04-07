@@ -1,7 +1,6 @@
 import './AddHabitForm.css';
 import { useState } from "react"
-import { v4 as uuidv4 } from 'uuid';
-
+import { createNewHabit } from '../../utils/habitUtils';
 
 export const AddHabitForm = ({onAddHabit}) => {
     const [name, setName] = useState("");
@@ -10,21 +9,8 @@ export const AddHabitForm = ({onAddHabit}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         if (!name) return;
-
-        const newHabit = {
-            id: uuidv4(),
-            name,
-            frequency,
-            streak: 0,
-            lastCheckIn: null,
-            createdAt: new Date().toISOString().split("T")[0],
-            stage: "Seed",
-            description,
-            history: []
-        }
-
+        const newHabit = createNewHabit(name, frequency, description);
         onAddHabit(newHabit);
     }
 
