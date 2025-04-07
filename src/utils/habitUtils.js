@@ -1,5 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
+const HABITS_KEY = "habit_list";
+
 export const getGrowthStage = (streak) => {
     if (streak >= 21) return "🌸 Blooming Plant";
     if (streak >= 14) return "🪴 Mature Plant";
@@ -44,3 +46,8 @@ export const createNewHabit = (name, frequency, description) => {
     }
     return newHabit;
 }
+
+export const storeHabits = (habitList) => {
+    const stringifiedHabits = JSON.stringify(habitList);
+    localStorage.setItem(HABITS_KEY, stringifiedHabits);
+};
