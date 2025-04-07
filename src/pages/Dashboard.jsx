@@ -50,10 +50,10 @@ export const Dashboard = () => {
             <Header clickFunc={() => setIsShowingModal(!isShowingModal)}></Header>
             <HabitList habits={habits} onUpdate={handleUpdateHabit}/>
             
-            {isShowingModal && 
+           
             <Modal isShowing={isShowingModal} onClose={() => setIsShowingModal(false)}>
                 <AddHabitForm onAddHabit={handleAddHabit}></AddHabitForm>
-            </Modal>}
+            </Modal>
         </>
     )
 }
