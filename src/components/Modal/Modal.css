@@ -1,0 +1,46 @@
+.modal-overlay,
+.modal-content {
+    height: 100%;
+    width: 100%;
+}
+.modal-overlay {
+    position: fixed;
+    background: rgba(0, 0, 0, .5);
+    opacity: 0;
+    transition: 0.3s opacity ease;
+}
+.active .modal-overlay {
+    top: 0;
+    opacity: 1;
+}
+.modal-content {
+    background: white;
+    position: fixed;    
+}
+.modal-content-inner {
+    padding: 32px 20px;
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+}
+@media only screen and (max-width: 767px) {
+    .modal-content {
+        top: 100%;
+        transition: 0.3s top ease;
+    }
+    .active .modal-content {
+        top: 0;
+    }
+}
+@media only screen and (min-width: 768px) {
+    .modal-content {
+        right: -350px;
+        width: 350px;
+        top: 0;
+        transition: 0.3s right ease;
+    }
+    .active .modal-content {
+        right: 0;
+    }
+}

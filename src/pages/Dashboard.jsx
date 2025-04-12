@@ -2,11 +2,13 @@ import { useEffect, useState } from "react"
 import { Header } from "../components/Header/Header"
 import { HabitList } from "../components/HabitList/HabitList.jsx";
 import { AddHabitForm } from "../components/AddHabitForm/AddHabitForm.jsx";
+import { Modal } from "../components/Modal/Modal.jsx";
 
 const HABITS_KEY = "habit_list";
 
 export const Dashboard = () => {
     const [habits, setHabits] = useState([]);
+    const [isShowingModal, setIsShowingModal] = useState(false);
 
     useEffect(() => {
         // 'fetch' stored habits in localStorage
@@ -25,6 +27,9 @@ export const Dashboard = () => {
 
         // persist data
         storeHabits(updatedList);
+        
+        // close
+        setIsShowingModal(false);
     }
 
     const handleUpdateHabit = (updatedHabit) => {
@@ -42,9 +47,13 @@ export const Dashboard = () => {
 
     return (
         <>
-            <Header></Header>
+            <Header clickFunc={() => setIsShowingModal(!isShowingModal)}></Header>
             <HabitList habits={habits} onUpdate={handleUpdateHabit}/>
-            <AddHabitForm onAddHabit={handleAddHabit}></AddHabitForm>
+            
+           
+            <Modal isShowing={isShowingModal} onClose={() => setIsShowingModal(false)}>
+                <AddHabitForm onAddHabit={handleAddHabit}></AddHabitForm>
+            </Modal>
         </>
     )
 }
