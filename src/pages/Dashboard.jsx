@@ -3,6 +3,7 @@ import { Header } from "../components/Header/Header"
 import { HabitList } from "../components/HabitList/HabitList.jsx";
 import { AddHabitForm } from "../components/AddHabitForm/AddHabitForm.jsx";
 import { Modal } from "../components/Modal/Modal.jsx";
+import { checkForHabitDecay } from "../utils/habitUtils.js";
 
 const HABITS_KEY = "habit_list";
 
@@ -16,7 +17,8 @@ export const Dashboard = () => {
 
         if (stored) {
             const parsedHabits = JSON.parse(stored);
-            setHabits(parsedHabits);
+            const checkedHabits = checkForHabitDecay(parsedHabits);
+            setHabits(checkedHabits);
         }
     }, []);
 

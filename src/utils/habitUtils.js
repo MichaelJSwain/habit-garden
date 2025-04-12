@@ -21,13 +21,54 @@ export const getYesterday = () => {
 export const checkInHabit = (habit) => {
     const today = getToday();
     if (habit.lastCheckIn === today) return;
-    const newStreak = habit.lastCheckIn === getYesterday() ? habit.streak + 1 : 1;
+    const newStreak = habit.streak + 1;
     const updatedHabit = {
         ...habit,
         streak: newStreak,
         lastCheckIn: today,
     };
     return updatedHabit;
+};
+
+const getDaysSinceLastCheckIn = (s) => {
+
+    var ms = s % 1000;
+    s = (s - ms) / 1000;
+    var secs = s % 60;
+    s = (s - secs) / 60;
+    var mins = s % 60;
+    var hrs = (s - mins) / 60;
+    var days = hrs / 24;
+
+    return days;
+}
+
+const getDecayAmount = (streak, lastCheckIn) => {
+    const date = new Date(lastCheckIn);
+    const lastCheckInmilliseconds = date.getTime();
+    const today = new Date(getToday());
+    const todayInMilliseconds = today.getTime();
+    
+    const lastCheckInDays = getDaysSinceLastCheckIn(lastCheckInmilliseconds);
+    const todayInDays = getDaysSinceLastCheckIn(todayInMilliseconds);
+   
+    const daysSinceLastCheckIn = todayInDays - lastCheckInDays;
+
+    return daysSinceLastCheckIn >= streak ? 0 : daysSinceLastCheckIn;
+}
+
+export const checkForHabitDecay = (habits) => {
+    const today = getToday();
+    const yesterday = getYesterday();
+
+    const checkedHabits = habits.map(habit => {
+        if (habit.frequency === "Daily" && habit.lastCheckIn !== today && habit.lastCheckIn !== yesterday) {
+            const decayAmount = getDecayAmount(habit.streak, habit.lastCheckIn);
+            habit.streak = habit.streak - decayAmount;
+        }
+        return habit;
+    })
+    return checkedHabits;
 };
 
 export const createNewHabit = (name, frequency, description) => {
