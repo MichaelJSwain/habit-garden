@@ -16,7 +16,7 @@ export const HabitCard = ({habit, onUpdate}) => {
             <div className="card-info-container">
                 <h3>{habit.name}</h3>
                 <div>
-                    <p>Streak: {habit.streak} 🔥</p>
+                    <p>Streak: {habit.streak} {habit.streak > 0 ? "🔥" : ""}</p>
                     
                 </div>
             </div>

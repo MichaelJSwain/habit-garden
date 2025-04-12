@@ -1,5 +1,13 @@
 .habit-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: calc(100% - 40px);
+    margin: 0 auto;
+    gap: 15px;
+}
+
+@media only screen and (min-width: 1024px) {
+    .habit-list {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
 }
