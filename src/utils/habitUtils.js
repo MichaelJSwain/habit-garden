@@ -1,5 +1,35 @@
 import { v4 as uuidv4 } from 'uuid';
 
+const HABITS_KEY = "habit_list";
+
+export const fetchHabits = () => {
+     const stored = localStorage.getItem(HABITS_KEY);
+
+    if (stored) {
+        const parsedHabits = JSON.parse(stored);
+        
+        // calculate wilting level
+        const checkedHabits = parsedHabits.map(habit => {
+            const wiltingLevel = calculateWiltingLevel(habit.wiltingLevel, habit.lastCheckIn); // replace with call to checkDaysSince()
+            habit.wiltingLevel = wiltingLevel;
+            return habit
+        })
+
+        // persist data
+        storeHabits(checkedHabits);
+
+        return checkedHabits;
+    } else {
+        return [];
+    }
+}
+
+ export const storeHabits = (habitList) => {
+        const stringifiedHabits = JSON.stringify(habitList);
+        localStorage.setItem(HABITS_KEY, stringifiedHabits);
+    }
+
+
 export const getGrowthStage = (streak) => {
     if (streak >= 21) return "🌸 Blooming Plant";
     if (streak >= 14) return "🪴 Mature Plant";
