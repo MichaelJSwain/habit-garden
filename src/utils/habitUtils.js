@@ -8,6 +8,32 @@ export const getGrowthStage = (streak) => {
     return "🌰 Seed";
   }
 
+  export const getWiltingStatus = (wiltingLevel) => {
+    // const wiltingLevel = calculateWiltingLevel(lastCheckIn);
+    console.log("wiltingLevel = ", wiltingLevel);
+    if (wiltingLevel === 0) return "Healthy 🍃";
+    if (wiltingLevel === 1) return "Slightly Wilted 🟡";
+    if (wiltingLevel === 2) return "Wilted 🟠";
+    return "Dying 🔴";
+  }
+  
+  export const calculateWiltingLevel = (currentWiltingLevel, lastCheckIn) => {
+    if (!lastCheckIn) return 0;
+  
+    const lastDate = new Date(lastCheckIn);
+    const today = new Date();
+  
+    let daysMissed = Math.floor(
+      (today.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24)
+    ) - 1 > 0 ? Math.floor(
+        (today.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24)
+      ) - 1 : 0;
+
+    const calculatedWiltingLevel = currentWiltingLevel + daysMissed <= 3 ? currentWiltingLevel + daysMissed : 3;
+  
+    return Math.max(0, calculatedWiltingLevel);
+  }
+
 export const getToday = () => {
     return new Date().toISOString().split("T")[0];
 }
@@ -22,10 +48,12 @@ export const checkInHabit = (habit) => {
     const today = getToday();
     if (habit.lastCheckIn === today) return;
     const newStreak = habit.streak + 1;
+    const newWiltingLevel = habit.wiltingLevel > 0 ? habit.wiltingLevel - 1 : 0;
     const updatedHabit = {
         ...habit,
         streak: newStreak,
         lastCheckIn: today,
+        wiltingLevel: newWiltingLevel
     };
     return updatedHabit;
 };
@@ -81,6 +109,7 @@ export const createNewHabit = (name, frequency, description) => {
         lastCheckIn: null,
         createdAt: now,
         description,
+        wiltingLevel: 0,
         history: []
     }
     return newHabit;

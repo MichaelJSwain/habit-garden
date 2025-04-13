@@ -3,7 +3,7 @@ import { Header } from "../components/Header/Header"
 import { HabitList } from "../components/HabitList/HabitList.jsx";
 import { AddHabitForm } from "../components/AddHabitForm/AddHabitForm.jsx";
 import { Modal } from "../components/Modal/Modal.jsx";
-import { checkForHabitDecay } from "../utils/habitUtils.js";
+import { calculateWiltingLevel } from "../utils/habitUtils.js";
 
 const HABITS_KEY = "habit_list";
 
@@ -17,8 +17,19 @@ export const Dashboard = () => {
 
         if (stored) {
             const parsedHabits = JSON.parse(stored);
-            const checkedHabits = checkForHabitDecay(parsedHabits);
+            
+            // calculate wilting level
+            const checkedHabits = parsedHabits.map(habit => {
+                const wiltingLevel = calculateWiltingLevel(habit.wiltingLevel, habit.lastCheckIn); // replace with call to checkDaysSince()
+                habit.wiltingLevel = wiltingLevel;
+                return habit
+            })
+
+            // update ui
             setHabits(checkedHabits);
+
+            // persist data
+            storeHabits(checkedHabits);
         }
     }, []);
 
