@@ -10,8 +10,10 @@ export const fetchHabits = () => {
         
         // calculate wilting level
         const checkedHabits = parsedHabits.map(habit => {
-            const wiltingLevel = calculateWiltingLevel(habit.wiltingLevel, habit.lastCheckIn); // replace with call to checkDaysSince()
+            const daysMissed = getDaysMissed(habit.lastCheckIn);
+            const wiltingLevel = calculateWiltingLevel(daysMissed, habit.wiltingLevel); // replace with call to checkDaysSince()
             habit.wiltingLevel = wiltingLevel;
+            habit.streak = daysMissed > 0 ? 0 : habit.streak;
             return habit
         })
 
@@ -29,25 +31,7 @@ export const fetchHabits = () => {
         localStorage.setItem(HABITS_KEY, stringifiedHabits);
     }
 
-
-export const getGrowthStage = (streak) => {
-    if (streak >= 21) return "🌸 Blooming Plant";
-    if (streak >= 14) return "🪴 Mature Plant";
-    if (streak >= 7) return "🌿 Young Plant";
-    if (streak >= 3) return "🌱 Sprout";
-    return "🌰 Seed";
-  }
-
-  export const getWiltingStatus = (wiltingLevel) => {
-    // const wiltingLevel = calculateWiltingLevel(lastCheckIn);
-    console.log("wiltingLevel = ", wiltingLevel);
-    if (wiltingLevel === 0) return "Healthy 🍃";
-    if (wiltingLevel === 1) return "Slightly Wilted 🟡";
-    if (wiltingLevel === 2) return "Wilted 🟠";
-    return "Dying 🔴";
-  }
-  
-  export const calculateWiltingLevel = (currentWiltingLevel, lastCheckIn) => {
+export const getDaysMissed = (lastCheckIn) => {
     if (!lastCheckIn) return 0;
   
     const lastDate = new Date(lastCheckIn);
@@ -58,7 +42,27 @@ export const getGrowthStage = (streak) => {
     ) - 1 > 0 ? Math.floor(
         (today.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24)
       ) - 1 : 0;
+    
+    return daysMissed;
+}
 
+
+export const getGrowthStage = (xp) => {
+    if (xp >= 100) return "Blooming Plant 🌸";
+    if (xp >= 75) return "Mature Plant 🪴";
+    if (xp >= 50) return "Young Plant 🌿";
+    if (xp >= 25) return "Sprout 🌱";
+    return "Seed 🌰";
+  }
+
+  export const getWiltingStatus = (wiltingLevel) => {
+    if (wiltingLevel === 0) return "Healthy 🍃";
+    if (wiltingLevel === 1) return "Slightly Wilted 🟡";
+    if (wiltingLevel === 2) return "Wilted 🟠";
+    return "Dying 🔴";
+  }
+  
+  export const calculateWiltingLevel = (daysMissed, currentWiltingLevel) => {
     const calculatedWiltingLevel = currentWiltingLevel + daysMissed <= 3 ? currentWiltingLevel + daysMissed : 3;
   
     return Math.max(0, calculatedWiltingLevel);
@@ -79,11 +83,19 @@ export const checkInHabit = (habit) => {
     if (habit.lastCheckIn === today) return;
     const newStreak = habit.streak + 1;
     const newWiltingLevel = habit.wiltingLevel > 0 ? habit.wiltingLevel - 1 : 0;
+    let newXP = habit.xp;
+    
+
+    // XP gain logic - if plant is wilting, postpone 'growth' until the plant has been revived
+    const XP_PER_CHECKIN = habit.wiltingLevel === 0 ? 10 : 0;
+    newXP += XP_PER_CHECKIN;
+
     const updatedHabit = {
         ...habit,
         streak: newStreak,
         lastCheckIn: today,
-        wiltingLevel: newWiltingLevel
+        wiltingLevel: newWiltingLevel,
+        xp: newXP
     };
     return updatedHabit;
 };
@@ -140,6 +152,7 @@ export const createNewHabit = (name, frequency, description) => {
         createdAt: now,
         description,
         wiltingLevel: 0,
+        xp: 0,
         history: []
     }
     return newHabit;

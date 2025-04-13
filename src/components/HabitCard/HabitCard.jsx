@@ -11,7 +11,7 @@ export const HabitCard = ({habit, onUpdate}) => {
     return (
         <div className="card">
             <div className="card-img-container">
-            <p>{getGrowthStage(habit.streak)}</p>
+            <p>{getGrowthStage(habit.xp)}</p>
             <p>{getWiltingStatus(habit.wiltingLevel)}</p>
             </div>
             <div className="card-info-container">
