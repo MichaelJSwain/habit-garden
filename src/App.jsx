@@ -10,6 +10,7 @@ function App() {
         <Routes>
           <Route path="/habits" element={<Dashboard/>} ></Route>
           <Route path="/habits/:id" element={<HabitDetailView/>} ></Route>
+          <Route path="*" element={<Dashboard/>} replace ></Route>
         </Routes>
       </BrowserRouter>
     </>
