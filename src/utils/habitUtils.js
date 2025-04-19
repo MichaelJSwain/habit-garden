@@ -26,6 +26,19 @@ export const fetchHabits = () => {
     }
 }
 
+export const fetchHabit = (id) => {
+    const storedHabits = JSON.parse(localStorage.getItem(HABITS_KEY));
+
+    if (storedHabits && storedHabits.length) {
+        const foundHabit = storedHabits.find(habit => habit.id === id);
+        if (foundHabit) {
+            return foundHabit;
+        }
+    }
+
+    return null;
+}
+
  export const storeHabits = (habitList) => {
         const stringifiedHabits = JSON.stringify(habitList);
         localStorage.setItem(HABITS_KEY, stringifiedHabits);
