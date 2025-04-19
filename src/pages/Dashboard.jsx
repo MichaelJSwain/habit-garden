@@ -3,8 +3,7 @@ import { Header } from "../components/Header/Header"
 import { HabitList } from "../components/HabitList/HabitList.jsx";
 import { AddHabitForm } from "../components/AddHabitForm/AddHabitForm.jsx";
 import { Modal } from "../components/Modal/Modal.jsx";
-
-const HABITS_KEY = "habit_list";
+import { storeHabits, fetchHabits } from "../utils/habitUtils.js";
 
 export const Dashboard = () => {
     const [habits, setHabits] = useState([]);
@@ -12,22 +11,16 @@ export const Dashboard = () => {
 
     useEffect(() => {
         // 'fetch' stored habits in localStorage
-        const stored = localStorage.getItem(HABITS_KEY);
-
-        if (stored) {
-            const parsedHabits = JSON.parse(stored);
-            setHabits(parsedHabits);
-        }
+        const fetchedHabits = fetchHabits();
+        setHabits(fetchedHabits);
     }, []);
 
     const handleAddHabit = (newHabit) => {
         const updatedList = [...habits, newHabit];
         // update UI
         setHabits(updatedList);
-
         // persist data
         storeHabits(updatedList);
-        
         // close
         setIsShowingModal(false);
     }
@@ -40,11 +33,7 @@ export const Dashboard = () => {
         storeHabits(updatedList);
     }
 
-    const storeHabits = (habitList) => {
-        const stringifiedHabits = JSON.stringify(habitList);
-        localStorage.setItem(HABITS_KEY, stringifiedHabits);
-    }
-
+ 
     return (
         <>
             <Header clickFunc={() => setIsShowingModal(!isShowingModal)}></Header>
