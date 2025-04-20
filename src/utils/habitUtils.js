@@ -97,6 +97,7 @@ export const checkInHabit = (habit) => {
     const newStreak = habit.streak + 1;
     const newWiltingLevel = habit.wiltingLevel > 0 ? habit.wiltingLevel - 1 : 0;
     let newXP = habit.xp;
+    const newHistory = [...habit.history, today];
     
 
     // XP gain logic - if plant is wilting, postpone 'growth' until the plant has been revived
@@ -108,7 +109,8 @@ export const checkInHabit = (habit) => {
         streak: newStreak,
         lastCheckIn: today,
         wiltingLevel: newWiltingLevel,
-        xp: newXP
+        xp: newXP,
+        history: newHistory
     };
     return updatedHabit;
 };

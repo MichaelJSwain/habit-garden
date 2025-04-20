@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchHabit, getGrowthStage, getToday, getWiltingStatus } from "../../utils/habitUtils";
 import './HabitDetailView.css';
+import { CheckinHeatmap } from "../../components/CheckinHeatmap/CheckinHeatmap";
 
 export const HabitDetailView = () => {
     const [habit, setHabit] = useState(null);
@@ -67,9 +68,7 @@ export const HabitDetailView = () => {
                                 <div>
                                     <h1>Check in history:</h1>
                                 </div>
-                                <div className="check-in-heatmap">
-
-                                </div>
+                                <CheckinHeatmap history={habit.history} />
                             </div>
                         </div>
                     
