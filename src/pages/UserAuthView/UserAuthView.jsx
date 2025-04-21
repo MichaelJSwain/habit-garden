@@ -1,36 +1,28 @@
 import { useState } from "react"
+import { LoginForm } from "../../components/Forms/LoginForm";
+import { RegisterForm } from "../../components/Forms/RegisterForm";
 
 export const UserAuthView = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [formType, setFormType] = useState("login");
 
-    const handleChange = (e) => {
-        if (e.target.name === "email") {
-            setEmail(e.target.value);
-        } else {
-            setPassword(e.target.value);
-        }
+    const handleLogin = () => {
+        console.log("logging in...");
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log("handling submit");
+    const handleRegister = () => {
+        console.log("registering...");
+    }
+
+    const handleFormSelection = (e) => {
+        const selectedForm = e.target.textContent.toLowerCase();
+        setFormType(selectedForm);
     }
 
     return (
         <div>
-            <h1>Login</h1>
-            <form onSubmit={handleSubmit}>
-                <fieldset>
-                    <label htmlFor="email">Email:</label>
-                    <input name="email" type="text" onChange={handleChange} value={email}></input>
-                </fieldset>
-                <fieldset>
-                    <label htmlFor="password">Password:</label>
-                    <input name="password" type="password" onChange={handleChange} value={password}></input>
-                </fieldset>
-                <button>Login</button>
-            </form>
-    </div>
+            <h1>{formType === "login" ? "Login" : "Register"}</h1>
+            {formType === "login" ? <LoginForm submitFunc={handleLogin}></LoginForm> : <RegisterForm submitFunc={handleRegister}></RegisterForm>}
+            <button onClick={handleFormSelection}>{formType === "login" ? "Register" : "Login"}</button>
+        </div>
     )
 }
