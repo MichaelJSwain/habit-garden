@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const RegisterForm = () => {
+export const RegisterForm = ({submitFunc}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -14,7 +14,15 @@ export const RegisterForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        submitFunc();
+        if (!email) {
+            console.log("please enter your email");
+        }
+        if (!password) {
+            console.log("please enter your password");
+        }
+        if (email && password) {
+            submitFunc(email, password);
+        }
     }
 
     return (

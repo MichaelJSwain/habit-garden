@@ -14,7 +14,15 @@ export const LoginForm = ({submitFunc}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        submitFunc();
+        if (!email) {
+            console.log("please enter your email");
+        }
+        if (!password) {
+            console.log("please enter your password");
+        }
+        if (email && password) {
+            submitFunc(email, password);
+        }
     }
 
     return (

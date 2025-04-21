@@ -1,16 +1,29 @@
 import { useState } from "react"
 import { LoginForm } from "../../components/Forms/LoginForm";
 import { RegisterForm } from "../../components/Forms/RegisterForm";
+import { login, register } from "../../utils/authUtils";
+import { useNavigate } from "react-router-dom";
 
 export const UserAuthView = () => {
     const [formType, setFormType] = useState("login");
+    const navigate = useNavigate();
 
-    const handleLogin = () => {
-        console.log("logging in...");
+    const handleLogin = (email, password) => {
+        const res = login(email, password);
+        if (res) {
+            navigate("/habits", { replace: true });
+        } else {
+            console.log("show error");
+        }
     }
 
-    const handleRegister = () => {
-        console.log("registering...");
+    const handleRegister = (email, password) => {
+        const res = register(email, password);
+        if (res) {
+            console.log("error: user already exists");
+        } else {
+            navigate("/habits", { replace: true });
+        }
     }
 
     const handleFormSelection = (e) => {
