@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { getGrowthStage, getToday, checkInHabit, getWiltingStatus } from '../../utils/habitUtils';
 import './HabitCard.css';
 
@@ -8,8 +9,15 @@ export const HabitCard = ({habit, onUpdate}) => {
         onUpdate(updatedHabit);
     }
 
+    const navigate = useNavigate();
+
+    const navigateToDetailsPage = () => {
+        console.log("navigating");
+        navigate(`/habits/${habit.id}`, {test: "test"});
+    }
+
     return (
-        <div className="card">
+        <div className="card" onClick={navigateToDetailsPage}>
             <div className="card-img-container">
             <p>{getGrowthStage(habit.xp)}</p>
             <p>{getWiltingStatus(habit.wiltingLevel)}</p>

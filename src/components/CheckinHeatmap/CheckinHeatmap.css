@@ -1,0 +1,15 @@
+.check-in-heatmap {
+    height: 200px;
+    border: 1px solid white;
+    border-radius: 5px;
+    display: grid;
+    gap: 15px;
+    grid-template-columns:  1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+.heatmap-table-cell {
+    background-color: gray;
+    border-radius: 3px;
+}
+.active {
+    background-color: green;
+}
