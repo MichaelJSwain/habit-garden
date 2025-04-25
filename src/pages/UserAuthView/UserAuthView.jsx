@@ -1,20 +1,23 @@
-import { useState } from "react"
+import { use, useState } from "react"
 import { LoginForm } from "../../components/Forms/LoginForm";
 import { RegisterForm } from "../../components/Forms/RegisterForm";
 import { login, register } from "../../utils/authUtils";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 export const UserAuthView = () => {
     const [formType, setFormType] = useState("login");
     const navigate = useNavigate();
+    const {login} = useAuth();
 
     const handleLogin = (email, password) => {
-        const res = login(email, password);
-        if (res) {
-            navigate("/habits", { replace: true });
-        } else {
-            console.log("show error");
-        }
+        login(email, password);
+        // const res = login(email, password);
+        // if (res) {
+        //     navigate("/habits", { replace: true });
+        // } else {
+        //     console.log("show error");
+        // }
     }
 
     const handleRegister = (email, password) => {
