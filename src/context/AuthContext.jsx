@@ -21,27 +21,27 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState();
 
   useEffect(() => {
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem('user');
+    console.log("logged in user!!");
     if (token) {
       setIsAuthenticated(true);
     }
   }, []);
 
   const login = (email, password) => {
-    console.log("logging in via context");
     // check if user details match user details in fake DB
     const foundUser = userDB.find(user => user.email === email && user.password === password);
     if (foundUser) {
-      localStorage.setItem('user', userContext);
+      localStorage.setItem('user', "true");
       setIsAuthenticated(true);
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('auth_token');
+    localStorage.removeItem('user');
     setIsAuthenticated(false);
   };
 

@@ -4,18 +4,19 @@ import { Dashboard } from './pages/Dashboard'
 import { HabitDetailView } from './pages/HabitDetailView/HabitDetailView'
 import { UserAuthView } from './pages/UserAuthView/UserAuthView'
 import { AuthProvider } from './context/AuthContext.jsx'
+import { RequireAuth } from './components/route-components/RequireAuth.jsx'
 
 function App() {
-  return (
-    <AuthProvider>
+  return (    
       <BrowserRouter>
-        <Routes>
-          <Route path="/habits" element={<Dashboard/>}></Route>
-          <Route path="/habits/:id" element={<HabitDetailView/>} ></Route>
-          <Route path="/" element={<UserAuthView/>}></Route>
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path="/habits" element={<RequireAuth><Dashboard/></RequireAuth>}></Route>
+            <Route path="/habits/:id" element={<RequireAuth><HabitDetailView/></RequireAuth>} ></Route>
+            <Route path="/" element={<UserAuthView/>}></Route>
+          </Routes>
+          </AuthProvider>
       </BrowserRouter>
-    </AuthProvider>
   )
 }
 
