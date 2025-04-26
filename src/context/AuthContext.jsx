@@ -1,47 +1,23 @@
 // src/context/AuthContext.js
-import React, { createContext, useState, useEffect } from 'react';
-
-const userDB = [
-  {
-      email: "dave@mail.com",
-      password: "dave99"
-  },
-  {
-      email: "tim@yahoo.com",
-      password: "timtam"
-  },
-  {
-      email: "sarah@mail.co.uk",
-      password: "avocado"
-  },
-];
-
+import React, { createContext, useState } from 'react';
+import { clearToken, isLoggedIn, saveToken } from '../services/authService';
+import { apiLogin } from '../services/api';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState();
-  const [isAuthenticated, setIsAuthenticated] = useState();
+  const [isAuthenticated, setIsAuthenticated] = useState(!!isLoggedIn());
 
-  useEffect(() => {
-    const token = localStorage.getItem('user');
-    console.log("logged in user!!");
+  const login = async (email, password) => {
+    const token = await apiLogin(email, password);
     if (token) {
-      setIsAuthenticated(true);
-    }
-  }, []);
-
-  const login = (email, password) => {
-    // check if user details match user details in fake DB
-    const foundUser = userDB.find(user => user.email === email && user.password === password);
-    if (foundUser) {
-      localStorage.setItem('user', "true");
+      saveToken(token);
       setIsAuthenticated(true);
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('user');
+    clearToken()
     setIsAuthenticated(false);
   };
 
