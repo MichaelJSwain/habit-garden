@@ -1,8 +1,7 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import './App.css'
 import { Dashboard } from './pages/Dashboard'
 import { HabitDetailView } from './pages/HabitDetailView/HabitDetailView'
-import { UserAuthView } from './pages/UserAuthView/UserAuthView'
 import { AuthProvider } from './context/AuthContext.jsx'
 import { RequireAuth } from './components/route-components/RequireAuth.jsx'
 
@@ -13,7 +12,10 @@ function App() {
           <Routes>
             <Route path="/habits" element={<RequireAuth><Dashboard/></RequireAuth>}></Route>
             <Route path="/habits/:id" element={<RequireAuth><HabitDetailView/></RequireAuth>} ></Route>
-            <Route path="/" element={<UserAuthView/>}></Route>
+            <Route
+                path="*"
+                element={<Navigate to="/habits" replace />}
+            />
           </Routes>
           </AuthProvider>
       </BrowserRouter>
