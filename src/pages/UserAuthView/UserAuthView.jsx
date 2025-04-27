@@ -1,14 +1,15 @@
 import { use, useState } from "react"
 import { LoginForm } from "../../components/Forms/LoginForm";
 import { RegisterForm } from "../../components/Forms/RegisterForm";
-import { login, register } from "../../utils/authUtils";
+// import { login, register } from "../../utils/authUtils";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+// import { apiRegister } from "../../services/api";
 
 export const UserAuthView = () => {
     const [formType, setFormType] = useState("login");
     const navigate = useNavigate();
-    const {login} = useAuth();
+    const {login, register} = useAuth();
 
     const handleLogin = (email, password) => {
         login(email, password);
@@ -22,11 +23,13 @@ export const UserAuthView = () => {
 
     const handleRegister = (email, password) => {
         const res = register(email, password);
-        if (res) {
-            console.log("error: user already exists");
-        } else {
-            navigate("/habits", { replace: true });
-        }
+        console.log("register res = ", res);
+        // const res = register(email, password);
+        // if (res) {
+        //     console.log("error: user already exists");
+        // } else {
+        //     navigate("/habits", { replace: true });
+        // }
     }
 
     const handleFormSelection = (e) => {
