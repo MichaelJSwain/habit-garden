@@ -4,12 +4,16 @@ import { HabitList } from "../components/HabitList/HabitList.jsx";
 import { AddHabitForm } from "../components/AddHabitForm/AddHabitForm.jsx";
 import { Modal } from "../components/Modal/Modal.jsx";
 import { storeHabits, fetchHabits } from "../utils/habitUtils.js";
+import { useAuth } from "../context/AuthContext.jsx";
 
 export const Dashboard = () => {
     const [habits, setHabits] = useState([]);
     const [isShowingModal, setIsShowingModal] = useState(false);
 
+    const { isAuthenticated } = useAuth();
+
     useEffect(() => {
+        console.log("authenticated = ", isAuthenticated);
         // 'fetch' stored habits in localStorage
         const fetchedHabits = fetchHabits();
         setHabits(fetchedHabits);
