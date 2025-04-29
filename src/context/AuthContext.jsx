@@ -1,6 +1,6 @@
 // src/context/AuthContext.js
-import React, { createContext, useState } from 'react';
-import { clearToken, isLoggedIn, saveToken } from '../services/authService';
+import React, { createContext, useEffect, useState } from 'react';
+import { clearToken, fetchCurrentUser, isLoggedIn, saveToken } from '../services/authService';
 import { apiLogin, apiRegister } from '../services/api';
 
 const AuthContext = createContext();
@@ -8,6 +8,21 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState();
   const [isAuthenticated, setIsAuthenticated] = useState(!!isLoggedIn());
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const user = await fetchCurrentUser();
+        setUser(user);
+        setIsAuthenticated(true);
+      } catch (err) {
+        clearToken();
+        setUser(null);
+        setIsAuthenticated(false);
+      }
+    }
+    init();
+  }, []);
 
   const login = async (email, password) => {
     const {token, user} = await apiLogin(email, password);

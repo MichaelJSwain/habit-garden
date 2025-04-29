@@ -10,7 +10,8 @@ export const Dashboard = () => {
     const [habits, setHabits] = useState([]);
     const [isShowingModal, setIsShowingModal] = useState(false);
 
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, user } = useAuth();
+    console.log("user", user);
 
     useEffect(() => {
         console.log("authenticated = ", isAuthenticated);
