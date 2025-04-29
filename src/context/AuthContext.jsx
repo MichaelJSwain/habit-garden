@@ -6,13 +6,15 @@ import { apiLogin, apiRegister } from '../services/api';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState();
   const [isAuthenticated, setIsAuthenticated] = useState(!!isLoggedIn());
 
   const login = async (email, password) => {
-    const token = await apiLogin(email, password);
-    if (token) {
+    const {token, user} = await apiLogin(email, password);
+    if (token && user) {
       saveToken(token);
       setIsAuthenticated(true);
+      setUser(user);
     }
   };
 
@@ -32,7 +34,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, register, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, register, logout, user }}>
       {children}
     </AuthContext.Provider>
   );

@@ -5,9 +5,13 @@ export const apiLogin = (email, password) => {
     const userDB = JSON.parse(localStorage.getItem(TOKEN_KEY));
     if (userDB && userDB.length) {
         const foundUser = userDB.find(user => user.email === email && user.password === password);
-        return foundUser ? Math.ceil(Math.random() * 10000) : null;
+        if (foundUser) {
+            const token = Math.ceil(Math.random() * 10000);
+            return {status: 201, token, user: foundUser};
+        }
+        return {status: 409};
     }
-    return null;
+    return {status: 409};
 }
 
 export const apiRegister = (email, password) => {
@@ -25,7 +29,7 @@ export const apiRegister = (email, password) => {
         // save to "DB"
         localStorage.setItem(TOKEN_KEY, JSON.stringify(userDB));
         const token = Math.ceil(Math.random() * 10000);
-        return {status: 201, token};
+        return {status: 201, token, user: newUser};
     }
     return {status: 409};
 }
